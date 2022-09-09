@@ -4,52 +4,87 @@ import { Button } from '@mui/material';
 import './App.css';
 
 function App() {
-  let [numberHeader, setNumberHeader] = React.useState({num: 0, log: "Started Log at 0"});
+  let [numberHeader, setNumberHeader] = React.useState({});
+  let [logRandomNumber, setLogRandomNumber] = React.useState("");
+  let [logIncrementedNumber, setLogIncrementedNumber] = React.useState("");
 
-  let randomNumber = 0;
-  let incrementNumber = 5;
+  const incrementNumber = 5;
 
-  <h1>Number Header Is {numberHeader}</h1>
+  let randomNumberObj = {
+    num: 0,
+    log: "Started Log at 0"
+  };
+
+  let incrementNumberObj = {
+    num: randomNumberObj.num + incrementNumber,
+    log: `Increment number to ${numberHeader.num}`
+  };
+
 
   const onRandomButtonClick = () => {
-    randomNumber = { 
+    randomNumberObj = { 
     num: Math.floor(Math.random() * 100),
     log: `Random number to ${numberHeader.num}`    
     }
 
-    setNumberHeader(randomNumber);
-    console.log(randomNumber);
-    console.log(numberHeader);
+    setNumberHeader(randomNumberObj);
+    setLogRandomNumber(randomNumberObj.log);
+    console.log(randomNumberObj.num)
+    console.log(logRandomNumber)
   }
   
   const onIncrementButtonClick = () => {
-    incrementNumber = {
+    incrementNumberObj = {
       num: numberHeader.num + incrementNumber,
       log: `Incremented number to ${numberHeader.num}`
     }
   
-    if(incrementNumber > 100)
-      alert("The maximum number is 100.");
-  
-    setNumberHeader(incrementNumber);
-    console.log(numberHeader.num)
+    if(incrementNumberObj.num > 100) {
+      alert("The maximum number is 100.")
+    } else {  
+    setNumberHeader(incrementNumberObj);
+    }
+    setLogIncrementedNumber(incrementNumberObj.log);
+    console.log(incrementNumberObj.num)
+    console.log(incrementNumberObj.log)
   }
+
+  const TextArea = ({value, handleLogChange}) => {
+      const onChange = (e) => handleLogChange(e.target.value)
+      return (
+        <textarea rows={10} cols={100}>
+          value={value}
+          onChange={(e) => handleLogChange(e.target.value)}
+        </textarea>
+      );
+  };
 
   return (
     <div className="App">
-      <h1>React</h1>
+      <h1>Number Head Is {numberHeader.num}</h1>
 
-      <Button id='randomButton' variant='outlined' onClick={onRandomButtonClick}>Random Number {numberHeader.num}</Button>&nbsp;
+      <Button 
+        id='randomButton' 
+        variant='outlined' 
+        onClick={() => {
+          randomNumberObj = { 
+            num: Math.floor(Math.random() * 100),
+            log: `Random number to ${numberHeader.num}`    
+          }
+
+          setNumberHeader(randomNumberObj);
+          setLogRandomNumber(randomNumberObj.log);
+          console.log(randomNumberObj.num)
+          console.log(logRandomNumber)
+        }}>
+          Random Number {numberHeader.num}
+        </Button>&nbsp;
       <Button id='incrementButton' variant='outlined' onClick={onIncrementButtonClick}>Increment Number {incrementNumber}</Button>
 
       <br></br>
       <br></br>
       
-      <textarea rows={10} cols={10}>
-        <p>{randomNumber.log}</p>
-        <p>{incrementNumber.log}</p>
-      </textarea>
-      
+
       <div>
         <p> By: Randy Chrisp - 8/20//2022</p>
         <p>	&#169; 2019 World Shipping, Inc.</p>
