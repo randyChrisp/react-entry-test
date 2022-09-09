@@ -1,19 +1,19 @@
 import React from 'react';
-import logo from './logo.svg';
 import { Button } from '@mui/material';
 import './App.css';
 
 function App() {
-  let [numberHeader, setNumberHeader] = React.useState({});
-  let [logRandomNumber, setLogRandomNumber] = React.useState("");
-  let [logIncrementedNumber, setLogIncrementedNumber] = React.useState("");
-
-  const incrementNumber = 5;
 
   let randomNumberObj = {
     num: 0,
     log: "Started Log at 0"
   };
+
+  let [numberHeader, setNumberHeader] = React.useState(randomNumberObj);
+  let [logRandomNumber, setLogRandomNumber] = React.useState("");
+  let [logIncrementedNumber, setLogIncrementedNumber] = React.useState("");
+
+  const incrementNumber = 5;
 
   let incrementNumberObj = {
     num: randomNumberObj.num + incrementNumber,
@@ -49,15 +49,15 @@ function App() {
     console.log(incrementNumberObj.log)
   }
 
-  const TextArea = ({value, handleLogChange}) => {
-      const onChange = (e) => handleLogChange(e.target.value)
-      return (
-        <textarea rows={10} cols={100}>
-          value={value}
-          onChange={(e) => handleLogChange(e.target.value)}
-        </textarea>
-      );
-  };
+  // const TextArea = ({value, handleLogChange}) => {
+  //     const onChange = (e) => handleLogChange(e.target.value)
+  //     return (
+  //       <textarea rows={10} cols={100}>
+  //         value={value}
+  //         onChange={(e) => handleLogChange(e.target.value)}
+  //       </textarea>
+  //     );
+  // };
 
   return (
     <div className="App">
