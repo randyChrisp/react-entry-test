@@ -4,86 +4,59 @@ import './App.css';
 
 function App() {
 
-  let randomNumberObj = {
-    num: 0,
-    log: "Started Log at 0"
-  };
+  let randomNumberObj: number = 0;
 
   let [numberHeader, setNumberHeader] = React.useState(randomNumberObj);
-  let [logRandomNumber, setLogRandomNumber] = React.useState("");
-  let [logIncrementedNumber, setLogIncrementedNumber] = React.useState("");
+  const [logList, setLogList] = React.useState([]);
+
+  const log = {
+    random: `Random number to ${numberHeader}`,
+    incremented: `Incremented number to ${numberHeader}`
+  }
+
+  console.log(numberHeader)
 
   const incrementNumber = 5;
 
-  let incrementNumberObj = {
-    num: randomNumberObj.num + incrementNumber,
-    log: `Increment number to ${numberHeader.num}`
-  };
-
-
-  const onRandomButtonClick = () => {
-    randomNumberObj = { 
-    num: Math.floor(Math.random() * 100),
-    log: `Random number to ${numberHeader.num}`    
-    }
-
-    setNumberHeader(randomNumberObj);
-    setLogRandomNumber(randomNumberObj.log);
-    console.log(randomNumberObj.num)
-    console.log(logRandomNumber)
-  }
-  
-  const onIncrementButtonClick = () => {
-    incrementNumberObj = {
-      num: numberHeader.num + incrementNumber,
-      log: `Incremented number to ${numberHeader.num}`
-    }
-  
-    if(incrementNumberObj.num > 100) {
-      alert("The maximum number is 100.")
-    } else {  
-    setNumberHeader(incrementNumberObj);
-    }
-    setLogIncrementedNumber(incrementNumberObj.log);
-    console.log(incrementNumberObj.num)
-    console.log(incrementNumberObj.log)
-  }
-
-  // const TextArea = ({value, handleLogChange}) => {
-  //     const onChange = (e) => handleLogChange(e.target.value)
-  //     return (
-  //       <textarea rows={10} cols={100}>
-  //         value={value}
-  //         onChange={(e) => handleLogChange(e.target.value)}
-  //       </textarea>
-  //     );
-  // };
-
   return (
     <div className="App">
-      <h1>Number Head Is {numberHeader.num}</h1>
+      <h1>Number Head Is {numberHeader}</h1>
 
       <Button 
         id='randomButton' 
         variant='outlined' 
         onClick={() => {
-          randomNumberObj = { 
-            num: Math.floor(Math.random() * 100),
-            log: `Random number to ${numberHeader.num}`    
-          }
+          randomNumberObj = Math.floor(Math.random() * 100),            
 
           setNumberHeader(randomNumberObj);
-          setLogRandomNumber(randomNumberObj.log);
-          console.log(randomNumberObj.num)
-          console.log(logRandomNumber)
-        }}>
-          Random Number {numberHeader.num}
-        </Button>&nbsp;
-      <Button id='incrementButton' variant='outlined' onClick={onIncrementButtonClick}>Increment Number {incrementNumber}</Button>
+          
+          console.log(log.random)
+        }}
+        >Random Number {numberHeader}
+      </Button>&nbsp;
+
+      <Button 
+        id='incrementButton' 
+        variant='outlined' 
+        onClick={() => {
+          let incrementNumberObj = numberHeader + incrementNumber;
+        
+          if(incrementNumberObj > 100) {
+            alert("The maximum number is 100.")
+          } else {  
+          setNumberHeader(incrementNumberObj);
+          console.log(log.incremented)
+          }
+        }}
+      >Increment Number {incrementNumber}
+      </Button>
 
       <br></br>
       <br></br>
-      
+
+      <textarea rows={10} cols={100}>
+        Random number to 
+      </textarea>      
 
       <div>
         <p> By: Randy Chrisp - 8/20//2022</p>
