@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@mui/material';
+import { Button, List, ListItem } from '@mui/material';
 import './App.css';
 
 function App() {
@@ -7,20 +7,19 @@ function App() {
   let randomNumberObj: number = 0;
 
   let [numberHeader, setNumberHeader] = React.useState(randomNumberObj);
-  const [logList, setLogList] = React.useState([]);
+  const [logList, setLogList] = React.useState([`Random number to ${numberHeader}`]);
 
-  const log = {
-    random: `Random number to ${numberHeader}`,
-    incremented: `Incremented number to ${numberHeader}`
-  }
-
-  console.log(numberHeader)
+  console.log(logList)
 
   const incrementNumber = 5;
 
   return (
     <div className="App">
-      <h1>Number Head Is {numberHeader}</h1>
+      <h1
+        style={{color: numberHeader >= 50 ? 'red' : 'blue'}}
+      >
+        Number Head Is {numberHeader}
+      </h1>
 
       <Button 
         id='randomButton' 
@@ -29,10 +28,13 @@ function App() {
           randomNumberObj = Math.floor(Math.random() * 100),            
 
           setNumberHeader(randomNumberObj);
-          
-          console.log(log.random)
+
+          const newLogItem = [...logList, `Random number to ${randomNumberObj}`];
+          setLogList(newLogItem);          
         }}
-        >Random Number {numberHeader}
+        >
+          <b>Random Number 
+        {numberHeader}</b>
       </Button>&nbsp;
 
       <Button 
@@ -45,18 +47,29 @@ function App() {
             alert("The maximum number is 100.")
           } else {  
           setNumberHeader(incrementNumberObj);
-          console.log(log.incremented)
+
+          const newIncrementedItem = [...logList, `Incremented number to ${incrementNumberObj}`];
+          setLogList(newIncrementedItem);
           }
         }}
-      >Increment Number {incrementNumber}
+      >
+        <b>Increment Number 
+      {incrementNumber}</b>
       </Button>
 
       <br></br>
       <br></br>
 
-      <textarea rows={10} cols={100}>
-        Random number to 
-      </textarea>      
+      <h2>Number Log</h2>
+      <List sx={{ '& .MuiListItem-root': {border: 'solid'}}}>
+        {logList.map((logItem) => {
+          return (
+            <ListItem key={logItem}>
+              {logItem}
+            </ListItem>
+          )
+        })}
+      </List>    
 
       <div>
         <p> By: Randy Chrisp - 8/20//2022</p>

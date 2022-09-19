@@ -17,6 +17,16 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+#randomButton {
+  background-image: url('/src/images/artturi-jalli-gYrYa37fAKI-unsplash.jpg');
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+}
+
+#incrementButton {
+  background-image: url('/src/images/thomas-t-OPpCbAAKWv8-unsplash.jpg');
+}
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
