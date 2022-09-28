@@ -1,78 +1,122 @@
 import React from 'react';
-import { Button, List, ListItem } from '@mui/material';
+import { Button, List, ListItem, Grid,  } from '@mui/material';
 import './App.css';
 
+const randomNumberBetween0And100 = () => {
+ return Math.floor(Math.random() * 100);
+}
+
+interface NumberObj {
+  number: number,
+  numberType: "init" | "random" | "incremented"
+}
+
 function App() {
+  
+  const defaultNumber: NumberObj = {number: 0, numberType: "init"};
 
-  let randomNumberObj: number = 0;
+  const [showHistoryForm, setShowHistoryForm] = React.useState(false);
+  const [numberHistory, setNumberHistory] = React.useState<NumberObj[]>([defaultNumber]);
 
-  let [numberHeader, setNumberHeader] = React.useState(randomNumberObj);
-  const [logList, setLogList] = React.useState([`Random number to ${numberHeader}`]);
-
-  console.log(logList)
-
-  const incrementNumber = 5;
+  const numHeader: number = numberHistory.at(-1)?.number || 0;
+  const incrementNumber: NumberObj = {number: 5, numberType: "incremented"}
+  const randomsLength: number = numberHistory.filter(x => x.numberType === "random").length;
+  const incrementedsLength: number = numberHistory.filter(x => x.numberType === "incremented").length;
 
   return (
     <div className="App">
       <h1
-        style={{color: numberHeader >= 50 ? 'red' : 'blue'}}
+        style={{color: numHeader >= 50 ? 'red' : 'blue'}}
       >
-        Number Head Is {numberHeader}
+        Number Head Is {numHeader}
       </h1>
 
       <Button 
         id='randomButton' 
         variant='outlined' 
         onClick={() => {
-          randomNumberObj = Math.floor(Math.random() * 100),            
 
-          setNumberHeader(randomNumberObj);
+          const newRandomNumber: number = randomNumberBetween0And100();    
 
-          const newLogItem = [...logList, `Random number to ${randomNumberObj}`];
-          setLogList(newLogItem);          
+          const newHistory: NumberObj[]  = [...numberHistory, {number: newRandomNumber, numberType: "random"}];
+          setNumberHistory(newHistory);           
         }}
         >
-          <b>Random Number 
-        {numberHeader}</b>
+          Random Number - {numHeader}
       </Button>&nbsp;
 
       <Button 
         id='incrementButton' 
         variant='outlined' 
         onClick={() => {
-          let incrementNumberObj = numberHeader + incrementNumber;
+
+          const incrementNumberObj: number = numHeader + incrementNumber.number;
         
           if(incrementNumberObj > 100) {
             alert("The maximum number is 100.")
-          } else {  
-          setNumberHeader(incrementNumberObj);
+          } else {
 
-          const newIncrementedItem = [...logList, `Incremented number to ${incrementNumberObj}`];
-          setLogList(newIncrementedItem);
+            const newIncrementedItem: NumberObj[] = [...numberHistory, {number: incrementNumberObj, numberType: "incremented"}];
+            setNumberHistory(newIncrementedItem);
           }
         }}
       >
-        <b>Increment Number 
-      {incrementNumber}</b>
+        Increment Number - {(incrementNumber.number)}
       </Button>
 
       <br></br>
       <br></br>
 
-      <h2>Number Log</h2>
-      <List sx={{ '& .MuiListItem-root': {border: 'solid'}}}>
-        {logList.map((logItem) => {
-          return (
-            <ListItem key={logItem}>
-              {logItem}
-            </ListItem>
-          )
-        })}
-      </List>    
+      <Button
+        id='NumberObj'
+        variant='contained'
+        onClick={() => {
+         setShowHistoryForm(!showHistoryForm)
+        }} 
+      >
+        Number History
+      </Button>
+
+      <br></br>
+      <br></br>
+
+      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>        
+        <Grid item>
+          {
+            showHistoryForm && (
+              <List sx={{ "& .MuiListItem-root": { justifyContent: "center" } }}>
+                <span>Random Numbers (Clicks {randomsLength})</span>
+                {numberHistory.filter(x => x.numberType === "random").map((historyItem) => {
+                  return(
+                  <ListItem>
+                    {historyItem.number} 
+                  </ListItem>
+                  )
+                })}
+              </List>
+            )
+          }
+        </Grid>
+        <Grid item>
+          {
+            showHistoryForm && (
+               <List sx={{ "& .MuiListItem-root": { justifyContent: "center"}}}>
+                <span>Incremented Numbers (Clicks {incrementedsLength})</span>
+                {numberHistory.filter(x => x.numberType === "incremented").map((historyItem) => {
+                  return(
+                  <ListItem>
+                    {historyItem.number} 
+                  </ListItem>
+                  )
+                })}
+              </List>
+            )
+          }
+        </Grid>
+      </Grid>
 
       <div>
-        <p> By: Randy Chrisp - 8/20//2022</p>
+        <p> By: Randy Chrisp - 8/20/2022</p>
         <p>	&#169; 2019 World Shipping, Inc.</p>
       </div>
     </div>
