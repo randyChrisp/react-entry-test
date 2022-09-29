@@ -18,6 +18,8 @@ function App() {
   const defaultNumber: NumberObj = {id: nextId, number: 0, numberType: "init"};
 
   const [showHistoryForm, setShowHistoryForm] = React.useState(false);
+  const [showNumberOrderForm, setShowNumberOrderForm] = React.useState(false);
+  const [showReverseOrderForm, setShowReverseOrderForm] = React.useState(false);
   const [numberHistory, setNumberHistory] = React.useState<NumberObj[]>([defaultNumber]);
 
   const numHeader: number = numberHistory.at(-1)?.number || 0;
@@ -126,6 +128,67 @@ function App() {
           }
         </Grid>
       </Grid>
+
+      <Button
+        id='NumberObj'
+        variant='contained'
+        onClick={() => {
+         setShowNumberOrderForm(!showNumberOrderForm)
+        }} 
+      >
+        Ordered Numbers
+      </Button>
+
+      <Grid container sx={{ "& .MuiGrid-container": { justifyContent: "center" } }}>
+        <Grid item>
+        {
+          showNumberOrderForm && (
+            <List sx={{ "& .MuiList-root": { justifyContent: "center" } }}>
+              {numberHistory.map((num) => {
+                return(
+                <ListItem>
+                  {num.id} - {num.number} 
+                </ListItem>
+                )
+              })}
+            </List>
+          )
+        }
+        </Grid>
+      </Grid>
+
+      <br></br>
+
+      <Button
+        id='NumberObj'
+        variant='contained'
+        onClick={() => {
+         setShowReverseOrderForm(!showReverseOrderForm)
+        }} 
+      >
+        Reversed Order
+      </Button>
+
+      <Grid container sx={{ "& .MuiGrid-container": { justifyContent: "center" } }}>
+        <Grid item>
+        {
+          showReverseOrderForm && (
+            <List sx={{ "& .MuiList-root": { justifyContent: "center" } }}>
+              {numberHistory.map((num) => {
+                return(
+                <ListItem>
+                  {num.id} - {num.number} 
+                </ListItem>
+                )
+              }).reverse()}
+            </List>
+          )
+        }
+        </Grid>
+      </Grid>
+
+      <br></br>
+      <br></br>
 
       <div>
         <p> By: Randy Chrisp - 8/20/2022</p>
