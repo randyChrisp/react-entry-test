@@ -14,8 +14,7 @@ interface NumberObj {
 
 function App() {
   
-  let nextId: number = 0;
-  const defaultNumber: NumberObj = {id: nextId, number: 0, numberType: "init"};
+  const defaultNumber: NumberObj = {id: 0, number: 0, numberType: "init"};
 
   const [showHistoryForm, setShowHistoryForm] = React.useState(false);
   const [showNumberOrderForm, setShowNumberOrderForm] = React.useState(false);
@@ -23,9 +22,16 @@ function App() {
   const [numberHistory, setNumberHistory] = React.useState<NumberObj[]>([defaultNumber]);
 
   const numHeader: number = numberHistory.at(-1)?.number || 0;
-  const incrementNumber: NumberObj = {id: nextId, number: 5, numberType: "incremented"}
+  const incrementNumber: NumberObj = {id: 0, number: 5, numberType: "incremented"}
   const randomsLength: number = numberHistory.filter(x => x.numberType === "random").length;
   const incrementedsLength: number = numberHistory.filter(x => x.numberType === "incremented").length;
+
+  const incrementIdByOne = () => {
+    const arrayOfIds: number[] = numberHistory.map(x => x.id);
+    const maxId: number = Math.max(...arrayOfIds);
+    const nextId : number = maxId + 1;
+    return nextId;
+  }
 
   return (
     <div className="App">
@@ -42,12 +48,9 @@ function App() {
 
           const newRandomNumber: number = randomNumberBetween0And100();
           
-          for (const randomNumber of numberHistory) {
-            if (randomNumber.id > nextId) nextId = randomNumber.id;
-          }
-          nextId = nextId + 1;
+          const newRandomId: number = incrementIdByOne();
 
-          const newHistory: NumberObj[]  = [...numberHistory, {id: nextId, number: newRandomNumber, numberType: "random"}];
+          const newHistory: NumberObj[]  = [...numberHistory, {id: newRandomId, number: newRandomNumber, numberType: "random"}];
           setNumberHistory(newHistory);           
         }}
         >
@@ -65,12 +68,8 @@ function App() {
             alert("The maximum number is 100.")
           } else {
 
-            for (const incrementedNumberId of numberHistory) {
-              if (incrementedNumberId.id > nextId) nextId = incrementedNumberId.id;
-            }
-            nextId = nextId + 1;
-
-            const newIncrementedItem: NumberObj[] = [...numberHistory, {id: nextId, number: incrementNumberObj, numberType: "incremented"}];
+            const newIncrementedId = incrementIdByOne();
+            const newIncrementedItem: NumberObj[] = [...numberHistory, {id: newIncrementedId, number: incrementNumberObj, numberType: "incremented"}];
             setNumberHistory(newIncrementedItem);
           }
         }}
