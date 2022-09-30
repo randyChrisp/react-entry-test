@@ -143,7 +143,7 @@ function App() {
         {
           showNumberOrderForm && (
             <List sx={{ "& .MuiList-root": { justifyContent: "center" } }}>
-              {numberHistory.map((num) => {
+              {numberHistory.filter(x => x.numberType !== "init").map((num) => {
                 return(
                 <ListItem>
                   {num.id} - {num.number} 
@@ -173,7 +173,7 @@ function App() {
         {
           showReverseOrderForm && (
             <List sx={{ "& .MuiList-root": { justifyContent: "center" } }}>
-              {numberHistory.map((num) => {
+              {numberHistory.filter(x => x.numberType !== "init").map((num) => {
                 return(
                 <ListItem>
                   {num.id} - {num.number} 
