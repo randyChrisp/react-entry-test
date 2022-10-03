@@ -1,5 +1,16 @@
 import React from 'react';
-import { Button, List, ListItem, Grid,  } from '@mui/material';
+import { 
+  Button, 
+  List, 
+  ListItem, 
+  Grid, 
+  RadioGroup, 
+  FormControl, 
+  FormLabel, 
+  FormControlLabel, 
+  Radio, 
+  ToggleButton
+} from '@mui/material';
 import './App.css';
 
 const randomNumberBetween0And100 = () => {
@@ -51,7 +62,8 @@ function App() {
           const newRandomId: number = incrementIdByOne();
 
           const newHistory: NumberObj[]  = [...numberHistory, {id: newRandomId, number: newRandomNumber, numberType: "random"}];
-          setNumberHistory(newHistory);           
+          setNumberHistory(newHistory);    
+          // localStorage.setItem(numberHistory, newHistory);    
         }}
         >
           Random Number - {numHeader}
@@ -69,6 +81,7 @@ function App() {
           } else {
 
             const newIncrementedId = incrementIdByOne();
+            
             const newIncrementedItem: NumberObj[] = [...numberHistory, {id: newIncrementedId, number: incrementNumberObj, numberType: "incremented"}];
             setNumberHistory(newIncrementedItem);
           }
@@ -80,6 +93,36 @@ function App() {
       <br></br>
       <br></br>
 
+      <FormControl>
+        <FormLabel id='formLabel'>Lists</FormLabel>
+        <RadioGroup row aria-labelledby='formLabel'>
+          <FormControlLabel
+            value='number-history'
+            control={<Radio />}
+            label='Number History'
+            onClick={() => {
+                setShowHistoryForm(!showHistoryForm)
+             }}
+          />
+          <FormControlLabel
+            value='ordered-numbers'
+            control={<Radio />}
+            label='Ordered Numbers'
+            onClick={() => {
+                setShowNumberOrderForm(!showNumberOrderForm)
+             }}
+          />
+          <FormControlLabel
+            value='reversed-order'
+            control={<Radio />}
+            label='Reversed Order'
+            onClick={() => {
+                setShowReverseOrderForm(!showReverseOrderForm);
+             }} 
+          />
+        </RadioGroup>
+      </FormControl>
+      
       <Button
         id='NumberObj'
         variant='contained'
