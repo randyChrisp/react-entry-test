@@ -4,12 +4,12 @@ import {
   List, 
   ListItem, 
   Grid, 
-  RadioGroup, 
+  ToggleButtonGroup, 
   FormControl, 
   FormLabel, 
-  FormControlLabel, 
-  Radio, 
-  ToggleButton
+  ToggleButton, 
+  Radio,
+  FormControlLabel
 } from '@mui/material';
 import './App.css';
 
@@ -24,12 +24,16 @@ interface NumberObj {
 }
 
 function App() {
-  
+  localStorage.setItem("name", "Randy");
   const defaultNumber: NumberObj = {id: 0, number: 0, numberType: "init"};
 
+  const [selectedButton, setSelectedButton] = React.useState<string | null>('');
   const [showHistoryForm, setShowHistoryForm] = React.useState(false);
+  console.log(showHistoryForm);
   const [showNumberOrderForm, setShowNumberOrderForm] = React.useState(false);
+  console.log(showNumberOrderForm);
   const [showReverseOrderForm, setShowReverseOrderForm] = React.useState(false);
+  console.log(showReverseOrderForm);
   const [numberHistory, setNumberHistory] = React.useState<NumberObj[]>([defaultNumber]);
 
   const numHeader: number = numberHistory.at(-1)?.number || 0;
@@ -43,6 +47,13 @@ function App() {
     const nextId : number = maxId + 1;
     return nextId;
   }
+
+  const handleSelectButton = (
+    event: React.MouseEvent<HTMLElement>,
+    newSelectedButton: string | null,
+    ) => {
+      setSelectedButton(newSelectedButton);
+  };
 
   return (
     <div className="App">
@@ -95,43 +106,55 @@ function App() {
 
       <FormControl>
         <FormLabel id='formLabel'>Lists</FormLabel>
-        <RadioGroup row aria-labelledby='formLabel'>
-          <FormControlLabel
-            value='number-history'
-            control={<Radio />}
-            label='Number History'
+        <ToggleButtonGroup
+          value={selectedButton}
+          exclusive
+          onChange={handleSelectButton}
+          aria-labelledby='formLabel'>
+          <ToggleButton value='number-history'
             onClick={() => {
-                setShowHistoryForm(!showHistoryForm)
-             }}
-          />
-          <FormControlLabel
-            value='ordered-numbers'
-            control={<Radio />}
-            label='Ordered Numbers'
-            onClick={() => {
-                setShowNumberOrderForm(!showNumberOrderForm)
-             }}
-          />
-          <FormControlLabel
-            value='reversed-order'
-            control={<Radio />}
-            label='Reversed Order'
-            onClick={() => {
+              setShowHistoryForm(!showHistoryForm);
+              console.log(showHistoryForm)
+              if (showNumberOrderForm) {
+                setShowNumberOrderForm(!showNumberOrderForm);
+                console.log(showNumberOrderForm)
+              }
+              if (showReverseOrderForm) {
                 setShowReverseOrderForm(!showReverseOrderForm);
-             }} 
-          />
-        </RadioGroup>
+                console.log(showReverseOrderForm)
+              }
+            }}
+          >
+            Number History
+          </ToggleButton>
+          <ToggleButton value='numbers-ordered'
+            onClick={() => {
+              setShowNumberOrderForm(!showNumberOrderForm);
+              if(showHistoryForm) {
+                setShowHistoryForm(!showHistoryForm);
+              }
+              if (showReverseOrderForm) {
+                setShowReverseOrderForm(!showReverseOrderForm);
+              }
+           }}
+          >
+           Ordered Numbers
+          </ToggleButton>
+          <ToggleButton value='reversed-order'
+            onClick={() => {
+              setShowReverseOrderForm(!showReverseOrderForm);
+              if (showHistoryForm) {
+                setShowHistoryForm(!showHistoryForm);
+              }
+              if (showNumberOrderForm) {
+                setShowNumberOrderForm(!showNumberOrderForm);
+              }
+           }}
+          >
+            Reversed Numbers
+          </ToggleButton>
+        </ToggleButtonGroup>
       </FormControl>
-      
-      <Button
-        id='NumberObj'
-        variant='contained'
-        onClick={() => {
-         setShowHistoryForm(!showHistoryForm)
-        }} 
-      >
-        Number History
-      </Button>
 
       <br></br>
       <br></br>
@@ -171,16 +194,6 @@ function App() {
         </Grid>
       </Grid>
 
-      <Button
-        id='NumberObj'
-        variant='contained'
-        onClick={() => {
-         setShowNumberOrderForm(!showNumberOrderForm)
-        }} 
-      >
-        Ordered Numbers
-      </Button>
-
       <Grid container sx={{ "& .MuiGrid-container": { justifyContent: "center" } }}>
         <Grid item>
         {
@@ -200,16 +213,6 @@ function App() {
       </Grid>
 
       <br></br>
-
-      <Button
-        id='NumberObj'
-        variant='contained'
-        onClick={() => {
-         setShowReverseOrderForm(!showReverseOrderForm)
-        }} 
-      >
-        Reversed Order
-      </Button>
 
       <Grid container sx={{ "& .MuiGrid-container": { justifyContent: "center" } }}>
         <Grid item>
