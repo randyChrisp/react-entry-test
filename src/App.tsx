@@ -24,16 +24,12 @@ interface NumberObj {
 }
 
 function App() {
-  localStorage.setItem("name", "Randy");
   const defaultNumber: NumberObj = {id: 0, number: 0, numberType: "init"};
 
   const [selectedButton, setSelectedButton] = React.useState<string | null>('');
   const [showHistoryForm, setShowHistoryForm] = React.useState(false);
-  console.log(showHistoryForm);
   const [showNumberOrderForm, setShowNumberOrderForm] = React.useState(false);
-  console.log(showNumberOrderForm);
   const [showReverseOrderForm, setShowReverseOrderForm] = React.useState(false);
-  console.log(showReverseOrderForm);
   const [numberHistory, setNumberHistory] = React.useState<NumberObj[]>([defaultNumber]);
 
   const numHeader: number = numberHistory.at(-1)?.number || 0;
@@ -74,7 +70,7 @@ function App() {
 
           const newHistory: NumberObj[]  = [...numberHistory, {id: newRandomId, number: newRandomNumber, numberType: "random"}];
           setNumberHistory(newHistory);    
-          // localStorage.setItem(numberHistory, newHistory);    
+          localStorage.setItem('random number', `${newRandomNumber}`);    
         }}
         >
           Random Number - {numHeader}
@@ -96,6 +92,7 @@ function App() {
             const newIncrementedItem: NumberObj[] = [...numberHistory, {id: newIncrementedId, number: incrementNumberObj, numberType: "incremented"}];
             setNumberHistory(newIncrementedItem);
           }
+          localStorage.setItem('incremented number', `${incrementNumberObj}`);
         }}
       >
         Increment Number - {(incrementNumber.number)}
