@@ -7,9 +7,7 @@ import {
   ToggleButtonGroup, 
   FormControl, 
   FormLabel, 
-  ToggleButton, 
-  Radio,
-  FormControlLabel
+  ToggleButton,
 } from '@mui/material';
 import './App.css';
 
@@ -24,12 +22,13 @@ interface NumberObj {
 }
 
 function App() {
-  const defaultNumber: NumberObj = {id: 0, number: 0, numberType: "init"};
+  const defaultNumber: NumberObj = {id: 0, number: 0, numberType: "random"};
 
-  const [selectedButton, setSelectedButton] = React.useState<string | null>('');
-  const [showHistoryForm, setShowHistoryForm] = React.useState(false);
-  const [showNumberOrderForm, setShowNumberOrderForm] = React.useState(false);
-  const [showReverseOrderForm, setShowReverseOrderForm] = React.useState(false);
+  const test = localStorage.getItem('form');
+  console.log(test)
+
+  const [selectedButton, setSelectedButton] = React.useState<string | null>(test);
+  console.log('selected-button', selectedButton)
   const [numberHistory, setNumberHistory] = React.useState<NumberObj[]>([defaultNumber]);
 
   const numHeader: number = numberHistory.at(-1)?.number || 0;
@@ -49,6 +48,7 @@ function App() {
     newSelectedButton: string | null,
     ) => {
       setSelectedButton(newSelectedButton);
+      localStorage.setItem('form', newSelectedButton || "")
   };
 
   return (
@@ -108,46 +108,13 @@ function App() {
           exclusive
           onChange={handleSelectButton}
           aria-labelledby='formLabel'>
-          <ToggleButton value='number-history'
-            onClick={() => {
-              setShowHistoryForm(!showHistoryForm);
-              console.log(showHistoryForm)
-              if (showNumberOrderForm) {
-                setShowNumberOrderForm(!showNumberOrderForm);
-                console.log(showNumberOrderForm)
-              }
-              if (showReverseOrderForm) {
-                setShowReverseOrderForm(!showReverseOrderForm);
-                console.log(showReverseOrderForm)
-              }
-            }}
-          >
+          <ToggleButton value='number-history'>
             Number History
           </ToggleButton>
-          <ToggleButton value='numbers-ordered'
-            onClick={() => {
-              setShowNumberOrderForm(!showNumberOrderForm);
-              if(showHistoryForm) {
-                setShowHistoryForm(!showHistoryForm);
-              }
-              if (showReverseOrderForm) {
-                setShowReverseOrderForm(!showReverseOrderForm);
-              }
-           }}
-          >
+          <ToggleButton value='numbers-ordered'>
            Ordered Numbers
           </ToggleButton>
-          <ToggleButton value='reversed-order'
-            onClick={() => {
-              setShowReverseOrderForm(!showReverseOrderForm);
-              if (showHistoryForm) {
-                setShowHistoryForm(!showHistoryForm);
-              }
-              if (showNumberOrderForm) {
-                setShowNumberOrderForm(!showNumberOrderForm);
-              }
-           }}
-          >
+          <ToggleButton value='reversed-order'>
             Reversed Numbers
           </ToggleButton>
         </ToggleButtonGroup>
@@ -159,7 +126,7 @@ function App() {
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>        
         <Grid item>
           {
-            showHistoryForm && (
+            ('number-history' ===  selectedButton) && (
               <List sx={{ "& .MuiListItem-root": { justifyContent: "center" } }}>
                 <span>Random Numbers (Clicks {randomsLength})</span>
                 {numberHistory.filter(x => x.numberType === "random").map((historyItem) => {
@@ -175,7 +142,7 @@ function App() {
         </Grid>
         <Grid item>
           {
-            showHistoryForm && (
+            ('number-history' === selectedButton) && (
                <List sx={{ "& .MuiListItem-root": { justifyContent: "center"}}}>
                 <span>Incremented Numbers (Clicks {incrementedsLength})</span>
                 {numberHistory.filter(x => x.numberType === "incremented").map((historyItem) => {
@@ -194,7 +161,7 @@ function App() {
       <Grid container sx={{ "& .MuiGrid-container": { justifyContent: "center" } }}>
         <Grid item>
         {
-          showNumberOrderForm && (
+          ('numbers-ordered' === selectedButton) && (
             <List sx={{ "& .MuiList-root": { justifyContent: "center" } }}>
               {numberHistory.filter(x => x.numberType !== "init").map((num) => {
                 return(
@@ -214,7 +181,7 @@ function App() {
       <Grid container sx={{ "& .MuiGrid-container": { justifyContent: "center" } }}>
         <Grid item>
         {
-          showReverseOrderForm && (
+          ('reversed-order' === selectedButton) && (
             <List sx={{ "& .MuiList-root": { justifyContent: "center" } }}>
               {numberHistory.filter(x => x.numberType !== "init").map((num) => {
                 return(
