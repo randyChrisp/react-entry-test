@@ -24,14 +24,13 @@ interface NumberObj {
 function App() {
   const defaultNumber: NumberObj = {id: 0, number: 0, numberType: "init"};
 
-  const test = localStorage.getItem('form');
+  const savedForm = localStorage.getItem('form');
   const numbers = localStorage.getItem('selected');
   const numbersParsed = numbers !== null ? JSON.parse(numbers): [defaultNumber];
   
   const [numberHistory, setNumberHistory] = React.useState<NumberObj[]>(numbersParsed);
 
-  const [selectedButton, setSelectedButton] = React.useState<string | null>(test);
-  console.log('selected-button', selectedButton)
+  const [selectedButton, setSelectedButton] = React.useState<string | null>(savedForm);
 
   const numHeader: number = numberHistory.at(-1)?.number || 0;
   const incrementNumber: NumberObj = {id: 0, number: 5, numberType: "incremented"}
@@ -53,12 +52,6 @@ function App() {
       localStorage.setItem('form', newSelectedButton || "")
   };
 
-  localStorage.setItem('selected', JSON.stringify(numberHistory));
-  // const selected = localStorage.getItem('selected');
-  // console.log("SELECTED",selected)
-  // const stored = JSON.parse(selected || "");
-  // console.log("stored", stored);
-
   return (
     <div className="App">
       <h1
@@ -77,9 +70,8 @@ function App() {
           const newRandomId: number = incrementIdByOne();
 
           const newHistory: NumberObj[]  = [...numberHistory, {id: newRandomId, number: newRandomNumber, numberType: "random"}];
-          setNumberHistory(newHistory);    
-          // localStorage.setItem('random number', `${newRandomNumber}`);
-          // localStorage.setItem('random-history', JSON.stringify(numberHistory));
+          setNumberHistory(newHistory);
+          localStorage.setItem('selected', JSON.stringify(newHistory));
         }}
         >
           Random Number - {numHeader}
@@ -100,9 +92,8 @@ function App() {
             
             const newIncrementedItem: NumberObj[] = [...numberHistory, {id: newIncrementedId, number: incrementNumberObj, numberType: "incremented"}];
             setNumberHistory(newIncrementedItem);
+            localStorage.setItem('selected', JSON.stringify(newIncrementedItem));
           }
-          // localStorage.setItem('incremented number', `${incrementNumberObj}`);
-          // localStorage.setItem('incremented-history', JSON.stringify(numberHistory));
         }}
       >
         Increment Number - {(incrementNumber.number)}
